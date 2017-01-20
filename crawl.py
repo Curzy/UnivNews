@@ -53,14 +53,12 @@ if sys.argv[1] == 'crawl':
             notice = Notice(**dict_notice)
             db.add(notice)
             db.commit()
-            exist = False
 
-        except Exception as e: # Duplicate Error
+            sender.send(Message('[%s] %s' % (notice.univ, notice.title),
+                                to="kdh0428@move.is",
+                                text=notice.link))
+
+        except Exception as e:  # Duplicate Error
             db.rollback()
-            exist = True
-        finally:
-            if not exist:
-                sender.send(Message('[%s] %s' % (notice.univ, notice.title),
-                                    to="kdh0428@move.is",
-                                    text=notice.link))
+
     sender.close()
