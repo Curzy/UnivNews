@@ -38,19 +38,29 @@ if sys.argv[1] == 'crawl':
                                                 [importlib.import_module('univs.' + module).get_list for module in
                                                  univs.__all__],
                                                 sender))
-    dict_notice = next(notices)
-    notice = Notice(**dict_notice)
-    db.add(notice)
-    db.commit()
-    exist = False
 
-    # except Exception as e:
-    #     db.rollback()
-    #     exist = True
-    #
-    # finally:
-    if not exist:
-        sender.send(Message('[%s] %s' % (notice.univ, notice.title),
-                            to="kdh0428@move.is",
-                            text=notice.link))
+    while True:
+
+        try:
+            dict_notice = next(notices)
+        except StopIteration:
+            break
+
+        if not isinstance(dict_notice, dict):
+            continue
+
+        try:
+            notice = Notice(**dict_notice)
+            db.add(notice)
+            db.commit()
+            exist = False
+
+        except Exception as e: # Duplicate Error
+            db.rollback()
+            exist = True
+        finally:
+            if not exist:
+                sender.send(Message('[%s] %s' % (notice.univ, notice.title),
+                                    to="kdh0428@move.is",
+                                    text=notice.link))
     sender.close()
