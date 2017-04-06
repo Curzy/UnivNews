@@ -55,7 +55,7 @@ if sys.argv[1] == 'crawl':
             db.commit()
 
             sender.send(Message('[%s] %s' % (notice.univ, notice.title),
-                                to="kdh0428@move.is",
+                                to="curzy@move.is",
                                 text=notice.link))
 
         except Exception as e:  # Duplicate Error
