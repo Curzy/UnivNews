@@ -3,6 +3,11 @@
 
 Usage
 -----
+settings.py 파일 생성
+```
+GMAIL_ID = 'your gmail id'
+GMAIL_PW = 'your gmail pw'
+```
 최초 실행시 DB init
 ```
 >>> python crawl.py init
