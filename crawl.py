@@ -34,10 +34,11 @@ if sys.argv[1] == 'crawl':
     sender = GMail(settings.GMAIL_ID, settings.GMAIL_PW)
 
     loop = asyncio.get_event_loop()
-    notices = loop.run_until_complete(fetch_all(loop,
-                                                [importlib.import_module('univs.' + module).get_list for module in
-                                                 univs.__all__],
-                                                sender))
+    notices = loop.run_until_complete(
+        fetch_all(loop,
+                  [importlib.import_module('univs.' + module).get_list
+                   for module in univs.__all__])
+    )
 
     while True:
 
